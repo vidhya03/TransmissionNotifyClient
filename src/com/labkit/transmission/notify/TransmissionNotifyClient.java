@@ -58,9 +58,6 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
         
         ArrayList<Torrents> torrentList = new ArrayList<>();
         
-        Map<Integer, String> map = new LinkedHashMap<>();
-        map.put(1, "value");
-        map.put(2,"value");
         Properties dbProps = getDbProperties(props);
         for (Torrents torrents : entity.getArguments().getTorrents()) {
             if(torrents.getDesiredAvailable()== 0){
@@ -72,17 +69,23 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
           }
         }
         /**
-         * If no torrents added clear the file ie DB
+         * If no torrents then clear reset the DB file
          */
         if(entity.getArguments().getTorrents().isEmpty()){
             dbProps.clear();
+            saveDb(props,dbProps);
         }
-        
         /**
-         * Send email
+         * Send email if not empty
          */
+        if(!torrentList.isEmpty())
+        {
            SendMailTLS.sendMail(props);
            saveDb(props,dbProps);
+        }else{
+            LOGGER.info("No update");
+        }
+        
     }
 
     private static void contructMailBody(Torrents torrents,Properties props) {

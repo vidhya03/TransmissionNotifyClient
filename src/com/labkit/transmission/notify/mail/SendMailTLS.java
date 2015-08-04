@@ -5,7 +5,10 @@ package com.labkit.transmission.notify.mail;
  * @author Vidhyadharan Deivamani (vidhya) - it.vidhyadharan@gmail.com
  */
 import static com.labkit.transmission.notify.CommonConstants.*;
+import com.labkit.transmission.notify.TransmissionNotifyClient;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,12 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendMailTLS {
-
-    public static void main(String[] args) {
-        Properties props = new Properties();
-
-        sendMail(props);
-    }
+private final static Logger LOGGER = Logger.getLogger(SendMailTLS.class.getName()); 
 
     public static void sendMail(Properties props) throws RuntimeException {
         final String username = System.getProperty(MAIL_USERNAME, props.getProperty(MAIL_USERNAME));
@@ -62,7 +60,7 @@ public class SendMailTLS {
             System.out.println("Successfully sent");
 
         } catch (MessagingException e) {
-           
+           LOGGER.log(Level.SEVERE, "Message sending failed", e);
             throw new RuntimeException(e);
             
         }
