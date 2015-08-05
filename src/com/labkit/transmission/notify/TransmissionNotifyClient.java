@@ -60,13 +60,11 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
         
         Properties dbProps = getDbProperties(props);
         for (Torrents torrents : entity.getArguments().getTorrents()) {
-            if(torrents.getDesiredAvailable()== 0){
-                if(!checkIfAlreadyNotified(torrents,dbProps)){
+            if(isCompleted(torrents) && !checkIfAlreadyNotified(torrents,dbProps)){
                     contructMailBody(torrents,props);
                     dbProps.put(Integer.toString(torrents.hashCode()),torrents.toString());
                     torrentList.add(torrents);
             }
-          }
         }
         /**
          * If no torrents then clear reset the DB file
@@ -86,6 +84,10 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
             LOGGER.info("No update");
         }
         
+    }
+
+    private static boolean isCompleted(Torrents torrents) {
+        return torrents.getDesiredAvailable()== 0 && torrents.getStatus()==6;
     }
 
     private static void contructMailBody(Torrents torrents,Properties props) {
@@ -111,9 +113,6 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
             e.printStackTrace();
         }
         return props;
-    }
-    private static String getTheStatus(Torrents torrents) {
-        return torrents.getDesiredAvailable()== 0 ? "100% Completed" : "Incomplete";
     }
 
     private static Response TransmissionRequest(Properties props,Client client, String session$Id) {
