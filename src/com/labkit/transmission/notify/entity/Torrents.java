@@ -70,8 +70,7 @@ final public class Torrents implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 47 * hash + (int) (this.id ^ (this.id >>> 32));
+        int hash = 3;
         hash = 47 * hash + Objects.hashCode(this.name);
         hash = 47 * hash + (int) (this.totalSize ^ (this.totalSize >>> 32));
         return hash;
@@ -89,9 +88,6 @@ final public class Torrents implements Serializable {
             return false;
         }
         final Torrents other = (Torrents) obj;
-        if (this.id != other.id) {
-            return false;
-        }
         if (this.totalSize != other.totalSize) {
             return false;
         }
@@ -103,8 +99,10 @@ final public class Torrents implements Serializable {
 
     @Override
     public String toString() {
-        return "Torrents{" + "id=" + id + ", name=" + name + ", totalSize=" + totalSize + '}';
+        return "Torrents{" + "desiredAvailable=" + desiredAvailable + ", id=" + id + ", name=" + name + ", status=" + status + ", totalSize=" + totalSize + '}';
     }
+
+ 
        
                
       
