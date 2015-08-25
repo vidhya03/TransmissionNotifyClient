@@ -5,7 +5,6 @@ package com.labkit.transmission.notify.mail;
  * @author Vidhyadharan Deivamani (vidhya) - it.vidhyadharan@gmail.com
  */
 import static com.labkit.transmission.notify.CommonConstants.*;
-import com.labkit.transmission.notify.TransmissionNotifyClient;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
