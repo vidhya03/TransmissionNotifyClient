@@ -8,7 +8,6 @@ import com.labkit.transmission.notify.mail.SendMailTLS;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +32,7 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
         String user = "transmission", passwordTrans = "transmission";
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(user, passwordTrans);
         Client client = ClientBuilder.newClient()
@@ -95,7 +94,7 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
      props.put(PI_NOTIFY_MAIL_BODY, body);        
     }
 
-    private static Properties readProperties() throws URISyntaxException{
+    private static Properties readProperties() {
         //Creating properties files from Java program
         Properties props = new Properties();
  
