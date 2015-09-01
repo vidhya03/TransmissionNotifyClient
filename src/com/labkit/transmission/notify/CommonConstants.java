@@ -28,7 +28,7 @@ public class CommonConstants {
   final public static String TRANSMISSION_PI_NOTIFY_DB="transmission.pi.notify.db";
   
   /**LOCAL PROPERTIES*/
-  final public static String PI_NOTIFY_MAIL_SUBJECT="notifyclient.mail.subject";
+  final public static String PI_NOTIFY_MAIL_SUBJECT="notifyclient.mail.subject"
   final public static String PI_NOTIFY_MAIL_BODY="notifyclient.mail.body";
   
   final public static String MAIL_USERNAME="user.mail.username";
