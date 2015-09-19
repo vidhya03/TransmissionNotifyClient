@@ -29,11 +29,19 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 public class TransmissionNotifyClient {
     
 private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.class.getName()); 
+private final static String _VERSION="1.beta.1";
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String user = "transmission", passwordTrans = "transmission";
+    String property = System.getProperty(VERSION);
+    if(property !=null){
+        System.out.println("Transmission Client Email notify version "+_VERSION);
+        System.exit(0);
+    }
+        Properties props = readProperties();
+        String user = System.getProperty(TRANSMISSION_RPC_USERNAME, props.getProperty(TRANSMISSION_RPC_USERNAME)),
+                passwordTrans = System.getProperty(TRANSMISSION_RPC_PASSWORD, props.getProperty(TRANSMISSION_RPC_PASSWORD));
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(user, passwordTrans);
         Client client = ClientBuilder.newClient()
                 .register(feature) /* For debug enable the below line*/ 
@@ -41,12 +49,14 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
                 .register(JacksonJsonProvider.class)
                 ;
 
-        Properties props = readProperties();
+        
         /**
          * Without session , response will be 409 along with valid session id
          */
         String transmission$Session$Id = TransmissionRequest(props,client, "").getHeaderString(TRANSMISSION_SESSION_ID);
-
+        
+         LOGGER.log(Level.INFO, "Received the Session Id {0}", transmission$Session$Id);
+         LOGGER.log(Level.INFO, "Passing the session Id  {0} to get the valid response", transmission$Session$Id);
         /**
          * Feedback the session id for valid response
          */
@@ -107,7 +117,7 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
              ) {
             props.load(txtInStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error in reading properties ", e);
         }
         return props;
     }
@@ -117,7 +127,8 @@ private final static Logger LOGGER = Logger.getLogger(TransmissionNotifyClient.c
          * This request will return 409 along with X-Transmission-Session-Id
          * header
          */
-        LOGGER.log(Level.INFO, "Connecting to {0}", System.getProperty(TRANSMISSION_HOST_RPC, props.getProperty(TRANSMISSION_HOST_RPC)));
+        LOGGER.log(Level.INFO, "Connecting to {0} with session$Id {1}" 
+                ,new Object[]{System.getProperty(TRANSMISSION_HOST_RPC, props.getProperty(TRANSMISSION_HOST_RPC)),session$Id});
         Response response = client.target(System.getProperty(TRANSMISSION_HOST_RPC, props.getProperty(TRANSMISSION_HOST_RPC)))
                 .request(MediaType.APPLICATION_JSON).header(TRANSMISSION_SESSION_ID, session$Id)
                 .post(Entity.json(TRANSMISSION_REQUEST));

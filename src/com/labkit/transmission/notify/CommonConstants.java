@@ -25,6 +25,9 @@ public class CommonConstants {
 "}";
   final public static String TRANSMISSION_SESSION_ID="X-Transmission-Session-Id";
   final public static String TRANSMISSION_HOST_RPC="transmission.host.rpc";
+  final public static String TRANSMISSION_RPC_USERNAME="transmission.username";
+  final public static String TRANSMISSION_RPC_PASSWORD="transmission.password";
+  final public static String VERSION="version";
   final public static String TRANSMISSION_PI_NOTIFY_DB="transmission.pi.notify.db";
   
   /**LOCAL PROPERTIES*/
